@@ -9,6 +9,7 @@ public class player_move : MonoBehaviour{
 	private bool isGroundEnter = false;	//接地時
 	private bool isGroundStay = false;	//接地中
 	private bool isGroundExit = false;	//接地終了時
+	public float gravity;				//重力
 
     void Start(){
 		rb = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
@@ -19,22 +20,26 @@ public class player_move : MonoBehaviour{
 		//接地判定確認
 		isGround = IsGround();
 
+		//キー入力
 		float horizontalKey = Input.GetAxis("Horizontal");
+		//重力発生
+		float ySpeed = -gravity;	//下方向に力を発生
+
 		//右入力
 		if(horizontalKey > 0){
-			rb.velocity = new Vector2(speed, rb.velocity.y);
+			rb.velocity = new Vector2(speed, ySpeed);
 		}
 		//左入力
 		else if(horizontalKey < 0){
-			rb.velocity = new Vector2(-speed, rb.velocity.y);
+			rb.velocity = new Vector2(-speed, ySpeed);
 		}
 		//無入力
 		else{
-			rb.velocity = Vector2.zero;
+			rb.velocity = new Vector2(0, ySpeed);
 		}
 	}
 
-	//接地判定
+	//接地判定(ここが呼ばれた時に判定する)
 	private bool IsGround(){
 		if(isGroundEnter = true || isGroundStay == true){
 			isGround = true;
