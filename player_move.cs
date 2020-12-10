@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class player_move : MonoBehaviour{
-	public float speed;					//速度
+	public float speed;						//速度
 	private Rigidbody2D rb = null;
-	private bool isGround = false;		//接地flag移動用
-	private bool isGroundEnter = false;	//接地時
-	private bool isGroundStay = false;	//接地中
-	private bool isGroundExit = false;	//接地終了時
-	public float gravity;				//重力
+	public player_groundCheck groundCheck;	//他のオブジェクトのスクリプト入れる用
+	public float gravity;					//重力
+	public float jumpSpeed;					//jump力
+	private bool isGround = false;			//接地flag移動用
+	private bool isJump = false;
+	private float jumpPos = 0.0f;			//jump開始時のyを保存
+	public float jumpHight;					//jumpする高さ
 
     void Start(){
 		rb = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
@@ -18,58 +20,48 @@ public class player_move : MonoBehaviour{
 	//物理演算用
 	void FixedUpdate(){
 		//接地判定確認
-		isGround = IsGround();
+		isGround = groundCheck.IsGround();	//groundCheckスクリプトにアクセス
 
 		//キー入力
 		float horizontalKey = Input.GetAxis("Horizontal");
+		float xSpeed = 0.0f;		//初期化
 		//重力発生
 		float ySpeed = -gravity;	//下方向に力を発生
 
 		//右入力
 		if(horizontalKey > 0){
-			rb.velocity = new Vector2(speed, ySpeed);
+			xSpeed = speed;
 		}
 		//左入力
 		else if(horizontalKey < 0){
-			rb.velocity = new Vector2(-speed, ySpeed);
+			xSpeed = -speed;
 		}
 		//無入力
 		else{
-			rb.velocity = new Vector2(0, ySpeed);
+			xSpeed = 0.0f;
 		}
-	}
 
-	//接地判定(ここが呼ばれた時に判定する)
-	private bool IsGround(){
-		if(isGroundEnter = true || isGroundStay == true){
-			isGround = true;
-		}else if(isGroundExit == true){
-			isGround = false;
+		//jump入力
+		if(isGround == true){	//接地時
+			if(Input.GetKey(KeyCode.Space)){
+				ySpeed = jumpSpeed;
+				jumpPos = transform.position.y;	//jump開始時のy保存
+				isJump = true;					//jump flag on
+				Debug.Log(jumpPos);
+			}else{
+				isJump = false;	//jump flag off
+			}
 		}
-		//初期化
-		isGroundEnter = false;
-		isGroundStay = false;
-		isGroundExit = false;
-		//返り値設定
-		return isGround;
-	}
-	
-	//接地時
-	private void OnTriggerEnter2D( Collider2D other) {
-		if(other.tag == "Ground"){
-			isGroundEnter = true;
+		else if(isJump == true){	//接地してなくてjump中の時
+			//キー入力中に、jumpしたい高さより低ければ
+			if(Input.GetKey(KeyCode.Space) && (jumpPos + jumpHight > transform.position.y)){
+				ySpeed = jumpSpeed;
+			}else{
+				isJump = false;	//jump flag off
+			}
 		}
-	}
-	//接地中
-	private void OnTriggerStay2D( Collider2D other) {
-		if(other.tag == "Ground"){
-			isGroundStay = true;
-		}
-	}
-	//接地終了時
-	private void OnTriggerExit2D( Collider2D other) {
-		if(other.tag == "Ground"){
-			isGroundExit = true;
-		}
+
+		//実際に移動
+		rb.velocity = new Vector2(xSpeed, ySpeed);
 	}
 }
