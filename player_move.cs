@@ -12,6 +12,10 @@ public class player_move : MonoBehaviour{
 	private bool isJump = false;
 	private float jumpPos = 0.0f;			//jump開始時のyを保存
 	public float jumpHight;					//jumpする高さ
+	public AnimationCurve walkCurve;		//walk用
+	public AnimationCurve jumpCurve;		//jump用
+	private float walkTime;					//walkグラフ制御用
+	private float beforeKey;				//入力方向save用
 
     void Start(){
 		rb = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
@@ -30,16 +34,31 @@ public class player_move : MonoBehaviour{
 
 		//右入力
 		if(horizontalKey > 0){
+			walkTime += Time.deltaTime;	//walk時間のカウント
 			xSpeed = speed;
 		}
 		//左入力
 		else if(horizontalKey < 0){
+			walkTime += Time.deltaTime;	//walk時間のカウント
 			xSpeed = -speed;
 		}
 		//無入力
 		else{
+			walkTime = 0.0f;			//walk時間のリセット
 			xSpeed = 0.0f;
 		}
+
+		//左右移動反転時のwalkTimeの処理
+		//左入力から右入力に反転時
+		if(horizontalKey > 0 && beforeKey < 0){
+			walkTime = 0.0f;			//walk時間のリセット
+		}
+		//右入力から左入力に反転時
+		else if(horizontalKey < 0 && beforeKey > 0){
+			walkTime = 0.0f;			//walk時間のリセット
+		}
+		beforeKey = horizontalKey;	//入力方向save
+
 
 		//jump入力
 		if(isGround == true){	//接地時
@@ -60,6 +79,10 @@ public class player_move : MonoBehaviour{
 				isJump = false;	//jump flag off
 			}
 		}
+
+		//AnimationCurveを速度に反映
+		//walk時
+		xSpeed *= walkCurve.Evaluate(walkTime);
 
 		//実際に移動
 		rb.velocity = new Vector2(xSpeed, ySpeed);
