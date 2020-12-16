@@ -16,6 +16,8 @@ public class player_move : MonoBehaviour{
 	public AnimationCurve jumpCurve;		//jump用
 	private float walkTime;					//walkグラフ制御用
 	private float beforeKey;				//入力方向save用
+	private float jumpTime;					//jumpグラフ制御用
+	public float jumpLimitTime;				//jump制限時間
 
     void Start(){
 		rb = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
@@ -66,23 +68,47 @@ public class player_move : MonoBehaviour{
 				ySpeed = jumpSpeed;
 				jumpPos = transform.position.y;	//jump開始時のy保存
 				isJump = true;					//jump flag on
-				Debug.Log(jumpPos);
+				jumpTime = 0.0f;				//jump時間のリセット
 			}else{
 				isJump = false;	//jump flag off
 			}
 		}
-		else if(isJump == true){	//接地してなくてjump中の時
-			//キー入力中に、jumpしたい高さより低ければ
-			if(Input.GetKey(KeyCode.Space) && (jumpPos + jumpHight > transform.position.y)){
-				ySpeed = jumpSpeed;
-			}else{
-				isJump = false;	//jump flag off
+		else if(isJump == true){		//接地してなくてjump中の時
+			//jump制御用private変数
+			bool jumpKey = false;
+			bool canHigh = false;
+			bool canTime = false;
+			//jumpボタンを入力しているか
+			if(Input.GetKey(KeyCode.Space)){
+				jumpKey = true;		//flag on
 			}
+			//jumpしたい高さより低いか
+			if(jumpPos + jumpHight > transform.position.y){
+				canHigh = true;	//flag on
+			}
+			//jump時間は長くないか
+			if(jumpLimitTime > jumpTime){
+				canTime = true;	//flag on
+			}
+
+			//まだjumpできる場合
+			if(jumpKey && canHigh && canTime){
+				ySpeed = jumpSpeed;
+				jumpTime += Time.deltaTime;	//jump時間カウント
+			}else{
+				isJump = false;
+				jumpTime = 0.0f;				//jump時間リセット
+			}
+
 		}
 
 		//AnimationCurveを速度に反映
 		//walk時
 		xSpeed *= walkCurve.Evaluate(walkTime);
+		//jump時
+		if(isJump == true){
+			ySpeed *= jumpCurve.Evaluate(jumpTime);
+		}
 
 		//実際に移動
 		rb.velocity = new Vector2(xSpeed, ySpeed);
