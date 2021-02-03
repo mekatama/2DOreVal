@@ -14,10 +14,12 @@ public class player_move : MonoBehaviour{
 	public float jumpHight;					//jumpする高さ
 	public AnimationCurve walkCurve;		//walk用
 	public AnimationCurve jumpCurve;		//jump用
+	public AnimationCurve jumpMoveCurve;	//jump中の左右移動用
 	private float walkTime;					//walkグラフ制御用
 	private float beforeKey;				//入力方向save用
 	private float jumpTime;					//jumpグラフ制御用
 	public float jumpLimitTime;				//jump制限時間
+	private float jumpMoveTime;				//jumpMoveグラフ制御用
 
     void Start(){
 		rb = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
@@ -36,12 +38,20 @@ public class player_move : MonoBehaviour{
 
 		//右入力
 		if(horizontalKey > 0){
-			walkTime += Time.deltaTime;	//walk時間のカウント
+			if(isJump == true){
+				jumpMoveTime += Time.deltaTime;	//jumpMove時間のカウント
+			}else{
+				walkTime += Time.deltaTime;		//walk時間のカウント
+			}
 			xSpeed = speed;
 		}
 		//左入力
 		else if(horizontalKey < 0){
-			walkTime += Time.deltaTime;	//walk時間のカウント
+			if(isJump == true){
+				jumpMoveTime += Time.deltaTime;	//jumpMove時間のカウント
+			}else{
+				walkTime += Time.deltaTime;		//walk時間のカウント
+			}
 			xSpeed = -speed;
 		}
 		//無入力
@@ -69,6 +79,7 @@ public class player_move : MonoBehaviour{
 				jumpPos = transform.position.y;	//jump開始時のy保存
 				isJump = true;					//jump flag on
 				jumpTime = 0.0f;				//jump時間のリセット
+				jumpMoveTime = 0.0f;			//jumpMove時間のリセット
 			}else{
 				isJump = false;	//jump flag off
 			}
@@ -97,17 +108,19 @@ public class player_move : MonoBehaviour{
 				jumpTime += Time.deltaTime;	//jump時間カウント
 			}else{
 				isJump = false;
-				jumpTime = 0.0f;				//jump時間リセット
+				jumpTime = 0.0f;			//jump時間リセット
 			}
 
 		}
 
 		//AnimationCurveを速度に反映
-		//walk時
-		xSpeed *= walkCurve.Evaluate(walkTime);
 		//jump時
 		if(isJump == true){
+			xSpeed *= jumpMoveCurve.Evaluate(jumpMoveTime);
 			ySpeed *= jumpCurve.Evaluate(jumpTime);
+		}else{
+			//walk時
+			xSpeed *= walkCurve.Evaluate(walkTime);
 		}
 
 		//実際に移動
