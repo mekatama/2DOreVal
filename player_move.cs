@@ -20,6 +20,7 @@ public class player_move : MonoBehaviour{
 	private float jumpTime;					//jumpグラフ制御用
 	public float jumpLimitTime;				//jump制限時間
 	private float jumpMoveTime;				//jumpMoveグラフ制御用
+	private bool isReleaseJumpBtn;			//jumpボタン離したflag
 
     void Start(){
 		rb = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
@@ -71,10 +72,13 @@ public class player_move : MonoBehaviour{
 		}
 		beforeKey = horizontalKey;	//入力方向save
 
-
 		//jump入力
 		if(isGround == true){	//接地時
-			if(Input.GetKey(KeyCode.Space)){
+			//jumpキー入力やめたか判定
+			if(Input.GetKeyUp(KeyCode.Space)){
+				isReleaseJumpBtn = true;
+			}
+			if(Input.GetKey(KeyCode.Space) && isReleaseJumpBtn == true){
 				ySpeed = jumpSpeed;
 				jumpPos = transform.position.y;	//jump開始時のy保存
 				isJump = true;					//jump flag on
@@ -106,11 +110,13 @@ public class player_move : MonoBehaviour{
 			if(jumpKey && canHigh && canTime){
 				ySpeed = jumpSpeed;
 				jumpTime += Time.deltaTime;	//jump時間カウント
-			}else{
+			}
+			//jump不可
+			else{
 				isJump = false;
 				jumpTime = 0.0f;			//jump時間リセット
+				isReleaseJumpBtn = false;	//接地してもjumpボタンを離してない
 			}
-
 		}
 
 		//AnimationCurveを速度に反映
