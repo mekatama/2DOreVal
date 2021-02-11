@@ -21,9 +21,14 @@ public class player_move : MonoBehaviour{
 	public float jumpLimitTime;				//jump制限時間
 	private float jumpMoveTime;				//jumpMoveグラフ制御用
 	private bool isReleaseJumpBtn;			//jumpボタン離したflag
+	private bool isMove;					//移動制御flag
+	private bool isLanding;					//着地時flag
+	private float timeElapsed = 0.0f;		//停止時間カウント用
+	public float timeStop;					//停止時間
 
     void Start(){
 		rb = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
+		isMove = true;						//初期化
 	}
 
 	//物理演算用
@@ -72,12 +77,26 @@ public class player_move : MonoBehaviour{
 		}
 		beforeKey = horizontalKey;	//入力方向save
 
-		//jump入力
+		//接地判定
 		if(isGround == true){	//接地時
 			//jumpキー入力やめたか判定
 			if(Input.GetKeyUp(KeyCode.Space)){
 				isReleaseJumpBtn = true;
 			}
+
+		//jumpから着地した時
+		if(isJump == false　&& isLanding == true){
+			isMove = false;				//移動flag off
+			//停止時間判定
+			timeElapsed += Time.deltaTime;	//カウント
+			if(timeElapsed >= timeStop){
+				isMove = true;				//移動許可
+				timeElapsed = 0.0f;			//初期化
+				isLanding = false;			//着地flag off	
+			}
+		}
+
+			//jump入力
 			if(Input.GetKey(KeyCode.Space) && isReleaseJumpBtn == true){
 				ySpeed = jumpSpeed;
 				jumpPos = transform.position.y;	//jump開始時のy保存
@@ -116,6 +135,7 @@ public class player_move : MonoBehaviour{
 				isJump = false;
 				jumpTime = 0.0f;			//jump時間リセット
 				isReleaseJumpBtn = false;	//接地してもjumpボタンを離してない
+				isLanding = true;			//着地flag on
 			}
 		}
 
@@ -129,7 +149,12 @@ public class player_move : MonoBehaviour{
 			xSpeed *= walkCurve.Evaluate(walkTime);
 		}
 
-		//実際に移動
-		rb.velocity = new Vector2(xSpeed, ySpeed);
+		//移動flag判定 
+		if(isMove == true){
+			//実際に移動
+			rb.velocity = new Vector2(xSpeed, ySpeed);
+		}else{
+			rb.velocity = new Vector2(0.0f, 0.0f);
+		}
 	}
 }
