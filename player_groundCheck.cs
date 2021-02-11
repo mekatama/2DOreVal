@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class player_groundCheck : MonoBehaviour{
-	private bool isGround = false;		//接地flag移動用
-	private bool isGroundEnter;	//接地時
-	private bool isGroundStay;	//接地中
-	private bool isGroundExit;	//接地終了時
+	private bool isGround = false;	//接地flag移動用
+	private bool isGroundEnter;		//接地時
+	private bool isGroundStay;		//接地中
+	private bool isGroundExit;		//接地終了時
 
 	//接地判定(ここが呼ばれた時に判定する)
 	public bool IsGround(){
