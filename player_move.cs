@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class player_move : MonoBehaviour{
 	public float speed;						//速度
+	public float dashSpeed;					//dash速度
 	private Rigidbody2D rb = null;
 	public player_groundCheck groundCheck;	//他のオブジェクトのスクリプト入れる用
 	public float gravity;					//重力
@@ -13,6 +14,7 @@ public class player_move : MonoBehaviour{
 	private float jumpPos = 0.0f;			//jump開始時のyを保存
 	public float jumpHight;					//jumpする高さ
 	public AnimationCurve walkCurve;		//walk用
+	public AnimationCurve dashMoveCurve;	//dash中の左右移動用
 	public AnimationCurve jumpCurve;		//jump用
 	public AnimationCurve jumpMoveCurve;	//jump中の左右移動用
 	private float walkTime;					//walkグラフ制御用
@@ -23,8 +25,12 @@ public class player_move : MonoBehaviour{
 	private bool isReleaseJumpBtn;			//jumpボタン離したflag
 	private bool isMove;					//移動制御flag
 	private bool isLanding;					//着地時flag
+	private bool isDash;					//Dash時flag
 	private float timeElapsed = 0.0f;		//停止時間カウント用
 	public float timeStop;					//停止時間
+	private float dashTimeElapsed = 0.0f;	//dash時間カウント用
+	public float timeDash;					//dash時間
+	private float dashTime;					//dashMoveグラフ制御用
 
     void Start(){
 		rb = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
@@ -46,19 +52,29 @@ public class player_move : MonoBehaviour{
 		if(horizontalKey > 0){
 			if(isJump == true){
 				jumpMoveTime += Time.deltaTime;	//jumpMove時間のカウント
+				xSpeed = speed;
+			}else if(isDash == true){
+				dashTime += Time.deltaTime;		//dash時間のカウント
+				xSpeed = dashSpeed;
 			}else{
 				walkTime += Time.deltaTime;		//walk時間のカウント
+				xSpeed = speed;
 			}
-			xSpeed = speed;
+//			xSpeed = speed;
 		}
 		//左入力
 		else if(horizontalKey < 0){
 			if(isJump == true){
 				jumpMoveTime += Time.deltaTime;	//jumpMove時間のカウント
+				xSpeed = -speed;
+			}else if(isDash == true){
+				dashTime += Time.deltaTime;		//dash時間のカウント
+				xSpeed = -dashSpeed;
 			}else{
 				walkTime += Time.deltaTime;		//walk時間のカウント
+				xSpeed = -speed;
 			}
-			xSpeed = -speed;
+//			xSpeed = -speed;
 		}
 		//無入力
 		else{
@@ -66,6 +82,22 @@ public class player_move : MonoBehaviour{
 			xSpeed = 0.0f;
 		}
 
+		//dash入力(左shift key)
+		if(Input.GetKey(KeyCode.LeftShift) && isDash == false){
+			if(isJump == false){
+				isDash = true;
+			}
+		}
+		//dash制限時間カウント
+		if(isDash == true){
+			dashTimeElapsed += Time.deltaTime;	//カウント
+			if(dashTimeElapsed >= timeDash){
+				Debug.Log("dash off");
+				dashTimeElapsed = 0.0f;		//初期化
+				isDash = false;				//dashflag off	
+			}
+		}
+		
 		//左右移動反転時のwalkTimeの処理
 		//左入力から右入力に反転時
 		if(horizontalKey > 0 && beforeKey < 0){
@@ -144,7 +176,11 @@ public class player_move : MonoBehaviour{
 		if(isJump == true){
 			xSpeed *= jumpMoveCurve.Evaluate(jumpMoveTime);
 			ySpeed *= jumpCurve.Evaluate(jumpTime);
+		}else if(isDash == true){
+			//dash時
+			xSpeed *= jumpMoveCurve.Evaluate(dashTime);
 		}else{
+			Debug.Log("walk");
 			//walk時
 			xSpeed *= walkCurve.Evaluate(walkTime);
 		}
