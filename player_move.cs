@@ -25,7 +25,7 @@ public class player_move : MonoBehaviour{
 	private bool isReleaseJumpBtn;			//jumpボタン離したflag
 	private bool isMove;					//移動制御flag
 	private bool isLanding;					//着地時flag
-	private bool isDash;					//Dash時flag
+	public bool isDash;						//Dash時flag
 	private float timeElapsed = 0.0f;		//停止時間カウント用
 	public float timeStop;					//停止時間
 	private float dashTimeElapsed = 0.0f;	//dash時間カウント用
