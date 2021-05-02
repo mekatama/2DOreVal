@@ -180,7 +180,6 @@ public class player_move : MonoBehaviour{
 			//dash時
 			xSpeed *= jumpMoveCurve.Evaluate(dashTime);
 		}else{
-			Debug.Log("walk");
 			//walk時
 			xSpeed *= walkCurve.Evaluate(walkTime);
 		}
@@ -190,7 +189,8 @@ public class player_move : MonoBehaviour{
 			//実際に移動
 			rb.velocity = new Vector2(xSpeed, ySpeed);
 		}else{
-			rb.velocity = new Vector2(0.0f, 0.0f);
+			//着地時一時停止、落下処理だけ維持
+			rb.velocity = new Vector2(0.0f, ySpeed);
 		}
 	}
-}
+} 
