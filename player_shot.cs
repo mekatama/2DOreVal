@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class player_shot : MonoBehaviour{
 	public GameObject bulletObject = null;		//弾のプレハブ
+	public GameObject effectObject = null;		//マズルエフェクトのプレハブ
 	public Transform bulletStartPosition = null;//弾の発射位置
 	private float timeElapsed = 0.0f;			//弾の連射間隔カウント用
 	public float timeOut;						//連射間隔の時間
-
-	void Start(){
-	}
 
 	void Update(){
 		Shot();
@@ -24,6 +22,12 @@ public class player_shot : MonoBehaviour{
 			//弾を生成
 			Instantiate(
 						bulletObject,
+						vecBulletPos,
+						transform.rotation
+						);
+			//マズルエフェクトを生成
+			Instantiate(
+						effectObject,
 						vecBulletPos,
 						transform.rotation
 						);
