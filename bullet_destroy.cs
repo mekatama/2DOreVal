@@ -6,7 +6,7 @@ public class bullet_destroy : MonoBehaviour{
 
 	void Start(){
 		//生成から5秒で削除
-		Destroy(gameObject,1.0f);
+		Destroy(gameObject,2.0f);
 	}
 
     void Update(){
@@ -17,8 +17,11 @@ public class bullet_destroy : MonoBehaviour{
 	void OnTriggerEnter2D( Collider2D other) {
 		if(other.tag == "Ground"){
 			Destroy(gameObject);	//このGameObjectを［Hierrchy］ビューから削除する
-		}
+		};
 		if(other.tag == "Wall"){
+			Destroy(gameObject);	//このGameObjectを［Hierrchy］ビューから削除する
+		}
+		if(other.tag == "Enemy"){
 			Destroy(gameObject);	//このGameObjectを［Hierrchy］ビューから削除する
 		}
 	}
