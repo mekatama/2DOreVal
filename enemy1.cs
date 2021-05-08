@@ -6,7 +6,8 @@ public class enemy1 : MonoBehaviour{
 	public int enemyHp;				//EnemyのHP
 	private bool isDeth;			//死亡flag
 	private bool isDamage;			//damage flag
-	public SpriteRenderer s;	//
+	public SpriteRenderer s;		//
+	public GameObject particle_exp;	//爆発Particle
 
     void Start(){
 		isDeth = false;		//初期化
@@ -38,6 +39,8 @@ public class enemy1 : MonoBehaviour{
 			if(enemyHp == 0){
 				if(isDeth == false){
 					Destroy(gameObject);			//このGameObjectを削除
+					//爆発effect
+					Instantiate (particle_exp, transform.position, transform.rotation);
 					isDeth = true;
 				}
 			}
