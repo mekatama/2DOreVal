@@ -23,7 +23,7 @@ public class enemy_spawn : MonoBehaviour{
 	void enemySpawn(){
 		enemyType = 0;					//敵の種類設定、仮で0固定
 		spawnType = 0;					//生成位置設定、仮で0固定
-		timeOut = 0.4f;					//連射間隔設定
+//		timeOut = 0.4f;					//連射間隔設定
 		timeElapsed += Time.deltaTime;	//カウント
 		if(timeElapsed >= timeOut){
 			//enemyの生成位置を指定
