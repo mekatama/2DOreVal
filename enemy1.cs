@@ -23,9 +23,9 @@ public class enemy1 : MonoBehaviour{
 		}
 	}
 
-	//他のオブジェクトとの当たり判定(trigger)
-	void OnTriggerEnter2D( Collider2D other) {
-		if(other.tag == "Bullet"){
+	//他のオブジェクトとの当たり判定(collision))
+	void OnCollisionEnter2D(Collision2D other) {
+		if(other.gameObject.tag == "Bullet"){
 			//ダメージ処理
 			if(enemyHp > 0){
 				enemyHp = enemyHp - 1;	//[仮]攻撃力をHPから引く
@@ -43,6 +43,14 @@ public class enemy1 : MonoBehaviour{
 					Instantiate (particle_exp, transform.position, transform.rotation);
 					isDeth = true;
 				}
+			}
+		}
+		if(other.gameObject.tag == "Player"){
+			if(isDeth == false){
+				Destroy(gameObject);			//このGameObjectを削除
+				//爆発effect
+				Instantiate (particle_exp, transform.position, transform.rotation);
+				isDeth = true;
 			}
 		}
 	}
