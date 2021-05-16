@@ -6,7 +6,7 @@ public class enemy1_direction : MonoBehaviour{
 	public bool isForward;	//前移動flag
 
 	void Start(){
-		isForward = true;	//初期化
+//		isForward = true;	//初期化
 	}
 
 	//他のオブジェクトとの当たり判定(collision))
