@@ -35,10 +35,12 @@ public class player_move : MonoBehaviour{
     void Start(){
 		rb = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
 		isMove = true;						//初期化
+		isReleaseJumpBtn = true;			//初期化
 	}
 
 	//物理演算用
 	void FixedUpdate(){
+Debug.Log("isReleaseJumpBtn : " + isReleaseJumpBtn);
 		//接地判定確認
 		isGround = groundCheck.IsGround();	//groundCheckスクリプトにアクセス
 
@@ -116,17 +118,17 @@ public class player_move : MonoBehaviour{
 				isReleaseJumpBtn = true;
 			}
 
-		//jumpから着地した時
-		if(isJump == false　&& isLanding == true){
-			isMove = false;				//移動flag off
-			//停止時間判定
-			timeElapsed += Time.deltaTime;	//カウント
-			if(timeElapsed >= timeStop){
-				isMove = true;				//移動許可
-				timeElapsed = 0.0f;			//初期化
-				isLanding = false;			//着地flag off	
+			//jumpから着地した時
+			if(isJump == false　&& isLanding == true){
+				isMove = false;				//移動flag off
+				//停止時間判定
+				timeElapsed += Time.deltaTime;	//カウント
+				if(timeElapsed >= timeStop){
+					isMove = true;				//移動許可
+					timeElapsed = 0.0f;			//初期化
+					isLanding = false;			//着地flag off	
+				}
 			}
-		}
 
 			//jump入力
 			if(Input.GetKey(KeyCode.Space) && isReleaseJumpBtn == true){
@@ -135,6 +137,7 @@ public class player_move : MonoBehaviour{
 				isJump = true;					//jump flag on
 				jumpTime = 0.0f;				//jump時間のリセット
 				jumpMoveTime = 0.0f;			//jumpMove時間のリセット
+				isReleaseJumpBtn = false;		//jump入力したのでfalse
 			}else{
 				isJump = false;	//jump flag off
 			}
@@ -147,6 +150,8 @@ public class player_move : MonoBehaviour{
 			//jumpボタンを入力しているか
 			if(Input.GetKey(KeyCode.Space)){
 				jumpKey = true;		//flag on
+			}else{
+				isReleaseJumpBtn = true;	//jumpボタンを離した
 			}
 			//jumpしたい高さより低いか
 			if(jumpPos + jumpHight > transform.position.y){
@@ -166,7 +171,7 @@ public class player_move : MonoBehaviour{
 			else{
 				isJump = false;
 				jumpTime = 0.0f;			//jump時間リセット
-				isReleaseJumpBtn = false;	//接地してもjumpボタンを離してない
+//				isReleaseJumpBtn = false;	//接地してもjumpボタンを離してない
 				isLanding = true;			//着地flag on
 			}
 		}
