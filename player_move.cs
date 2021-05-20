@@ -85,7 +85,7 @@ public class player_move : MonoBehaviour{
 
 		//dash入力(左shift key)
 		if(Input.GetKey(KeyCode.LeftShift) && isDash == false){
-			if(isJump == false){
+			if(isGround == true){
 				isDash = true;
 			}
 		}
@@ -93,9 +93,12 @@ public class player_move : MonoBehaviour{
 		if(isDash == true){
 			dashTimeElapsed += Time.deltaTime;	//カウント
 			if(dashTimeElapsed >= timeDash){
-				Debug.Log("dash off");
 				dashTimeElapsed = 0.0f;		//初期化
 				isDash = false;				//dashflag off	
+			}
+			//dash中にjumpしたら
+			if(isJump == true){
+				isDash = false;	//dash終了
 			}
 		}
 		
@@ -138,7 +141,7 @@ public class player_move : MonoBehaviour{
 				jumpMoveTime = 0.0f;			//jumpMove時間のリセット
 				isReleaseJumpBtn = false;		//jump入力したのでfalse
 			}else{
-				isJump = false;	//jump flag off
+//				isJump = false;	//jump flag off
 			}
 		}
 		else if(isJump == true){		//接地してなくてjump中の時
