@@ -40,7 +40,6 @@ public class player_move : MonoBehaviour{
 
 	//物理演算用
 	void FixedUpdate(){
-Debug.Log("isReleaseJumpBtn : " + isReleaseJumpBtn);
 		//接地判定確認
 		isGround = groundCheck.IsGround();	//groundCheckスクリプトにアクセス
 
