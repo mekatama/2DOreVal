@@ -31,11 +31,35 @@ public class player_move : MonoBehaviour{
 	private float dashTimeElapsed = 0.0f;	//dash時間カウント用
 	public float timeDash;					//dash時間
 	private float dashTime;					//dashMoveグラフ制御用
+//test
+	public LayerMask gro;	//地面レイヤー入れる
+	RaycastHit2D Ground;	//HITしたレイヤー情報
+	Vector3 pos;			//Transform
+	float _Rotation;		//地面の傾斜角
+	float sin;				//坂道の高さ
 
-    void Start(){
+	void Start(){
 		rb = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
 		isMove = true;						//初期化
 		isReleaseJumpBtn = true;			//初期化
+	}
+
+	void Update(){
+		pos = transform.position;
+		//着地
+		Ground = Physics2D.Linecast(pos + transform.up * 1f,
+									pos - transform.up * 0.2f,
+									gro);
+		Debug.DrawLine(	pos + transform.up * 1f,
+						pos - transform.up * 0.2f,
+						Color.red);	
+		if(Ground){
+			_Rotation = Ground.transform.localEulerAngles.z;	//地面の傾斜角を取得
+Debug.Log(_Rotation);
+			float rad = _Rotation * Mathf.Deg2Rad;				//角度をラジアンに変換
+			sin = Mathf.Sin(rad);								//ラジアンをSinに変換
+//Debug.Log(sin);
+		}
 	}
 
 	//物理演算用
@@ -189,10 +213,12 @@ public class player_move : MonoBehaviour{
 		}else{
 			//walk時
 			xSpeed *= walkCurve.Evaluate(walkTime);
+//			ySpeed = xSpeed * sin;
 		}
 
 		//移動flag判定 
 		if(isMove == true){
+Debug.Log(xSpeed);
 			//実際に移動
 			rb.velocity = new Vector2(xSpeed, ySpeed);
 		}else{
