@@ -16,7 +16,7 @@ public class enemy_spawn : MonoBehaviour{
 		enemyType = 0;	//初期化
 		spawnType = 0;	//初期化
 		enemy = null;	//
-		isSpawn = true;	//初期化
+		isSpawn = false;	//初期化
 	}
 
     void Update(){
