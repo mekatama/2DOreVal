@@ -16,7 +16,7 @@ public class player_hp : MonoBehaviour{
 	void OnCollisionEnter2D(Collision2D other) {
 		if(other.gameObject.tag == "Enemy"){
 			//ダメージ処理
-			if(playerHp > 0 && isMuteki == true){
+			if(playerHp > 0 && isMuteki == false){
 				playerHp = playerHp - 1;	//[仮]攻撃力をHPから引く
 				Debug.Log("HP = "+ playerHp);
 				if(playerHp <= 0){
