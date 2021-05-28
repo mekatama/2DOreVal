@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class effect_dash1 : MonoBehaviour{
 	public ParticleSystem particle;	//particle入れる用
-	private player_move playerMove;	//player_move.csを参照
+	private player_move2 playerMove;	//player_move.csを参照
 	private bool goParticle;
 
     void Start(){
@@ -12,7 +12,7 @@ public class effect_dash1 : MonoBehaviour{
 		//同じオブジェクトのParticleSystemを参照
 		particle = this.GetComponent<ParticleSystem>();
 		//親オブジェクトのplayer_move.cs参照
-		playerMove = GetComponentInParent<player_move>();
+		playerMove = GetComponentInParent<player_move2>();
 	}
 
     void Update(){
