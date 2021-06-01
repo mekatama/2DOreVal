@@ -6,6 +6,7 @@ public class enemy1 : MonoBehaviour{
 	public int enemyHp;				//EnemyのHP
 	private bool isDeth;			//死亡flag
 	private bool isDamage;			//damage flag
+	public bool isScreen;			//画面に入っているか flag
 	public SpriteRenderer s;		//
 	public GameObject particle_exp;	//爆発Particle
 
@@ -16,6 +17,13 @@ public class enemy1 : MonoBehaviour{
 	}
 
     void Update(){
+		//カメラに入った判定
+		if(s.isVisible){
+			isScreen = true;
+		}else{
+			isScreen = false;
+		}
+
 		//ダメージ点滅処理
 		if(isDamage == true){
 			float level = Mathf.Abs(Mathf.Sin(Time.time * 10));
