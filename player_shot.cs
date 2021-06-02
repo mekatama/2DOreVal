@@ -8,9 +8,12 @@ public class player_shot : MonoBehaviour{
 	public Transform bulletStartPosition = null;//弾の発射位置
 	private float timeElapsed = 0.0f;			//弾の連射間隔カウント用
 	public float timeOut;						//連射間隔の時間
+	public bool isShot;							//攻撃flag
 
 	void Update(){
-		Shot();
+		if(isShot == true){
+			Shot();
+		}
 	}
 
 	void Shot(){
