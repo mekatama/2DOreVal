@@ -11,6 +11,15 @@ public class enemy_shot_roll : MonoBehaviour{
 	}
 
 	void Update(){
+/*
+		if(childScript.isForward == true){
+			//画面右上方向
+			transform.rotation = Quaternion.Euler(0, 0, 45f); 
+		}else{
+			//画面左上方向
+			transform.rotation = Quaternion.Euler(0, 0, 135f); 
+		}
+*/
 		if(childScript.isForward == true){
 			//画面→方向
 			transform.rotation = Quaternion.Euler(0, 0, 0); 
@@ -18,6 +27,8 @@ public class enemy_shot_roll : MonoBehaviour{
 			//画面←方向
 			transform.rotation = Quaternion.Euler(0, 0, 180f); 
 		}
+
+
 /*
 		//キー入力判定
 		if (Input.GetKey(KeyCode.UpArrow)) {

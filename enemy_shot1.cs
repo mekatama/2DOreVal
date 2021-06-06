@@ -10,6 +10,13 @@ public class enemy_shot1 : MonoBehaviour{
 	public float timeOut;						//連射間隔の時間
 	public bool isShot;							//攻撃flag
 
+	public GameObject parent;				//enemy1_direction.csをアッタチしているオブジェクト用
+	private enemy1_direction childScript;	//enemy1_direction.csスクリプト入れる用
+
+	void Start(){
+		childScript = parent.GetComponent<enemy1_direction>();
+	}
+
 	void Update(){
 		if(isShot == true){
 			Shot();
@@ -23,11 +30,15 @@ public class enemy_shot1 : MonoBehaviour{
 			//弾の生成位置を指定
 			Vector3 vecBulletPos = bulletStartPosition.position;
 			//弾を生成
-			Instantiate(
+			GameObject shot = Instantiate(
 						bulletObject,
 						vecBulletPos,
 						transform.rotation
 						);
+			//弾に	enemyの向きを伝える
+			bullet_move_Enemy1 flag = shot.GetComponent<bullet_move_Enemy1>();
+			flag.isRight = childScript.isForward;
+
 			//マズルエフェクトを生成
 			Instantiate(
 						effectObject,
