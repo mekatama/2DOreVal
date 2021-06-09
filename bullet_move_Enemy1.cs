@@ -8,7 +8,7 @@ public class bullet_move_Enemy1 : MonoBehaviour{
 	public bool isRight;
 
 	void Start(){
-		Debug.Log(isRight);
+//		Debug.Log(isRight);
 		//榴弾挙動
 		rb2D = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
 		Vector2 force_r = new Vector2(power, power);
