@@ -9,18 +9,43 @@ public class enemy_shot1 : MonoBehaviour{
 	private float timeElapsed = 0.0f;			//弾の連射間隔カウント用
 	public float timeOut;						//連射間隔の時間
 	public bool isShot;							//攻撃flag
+	public int numShot;							//1setの攻撃数
+	private int numShotCount;					//1setの攻撃数のカウント用
+	public float stopTime;						//一時停止時間
 
 	public GameObject parent;				//enemy1_direction.csをアッタチしているオブジェクト用
 	private enemy1_direction childScript;	//enemy1_direction.csスクリプト入れる用
+	public GameObject parent2;				//enemy_rader1.csをアッタチしているオブジェクト用
+	private enemy_radar1 childScript2;		//enemy_rader1.csスクリプト入れる用
 
 	void Start(){
 		childScript = parent.GetComponent<enemy1_direction>();
+		childScript2 = parent2.GetComponent<enemy_radar1>();
+		numShotCount = 0;	//初期化
 	}
 
 	void Update(){
+		//Debug用flag
 		if(isShot == true){
-			Shot();
+			//player発見したら
+			if(childScript2.isDiscovery == true){
+				//1set攻撃回数判定
+				if(numShotCount < numShot){
+					Shot();
+				}else{
+					Stop();
+				}
+			}
 		}
+	}
+
+	void Stop(){
+		timeElapsed += Time.deltaTime;	//カウント
+		if(timeElapsed > stopTime){
+			numShotCount = 0;
+			timeElapsed = 0.0f;			//初期化
+		}
+
 	}
 
 	void Shot(){
@@ -45,6 +70,8 @@ public class enemy_shot1 : MonoBehaviour{
 						vecBulletPos,
 						transform.rotation
 						);
+			//攻撃回数判定処理
+			numShotCount += 1;
 			timeElapsed = 0.0f;			//初期化
 		}
 	}
