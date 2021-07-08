@@ -9,11 +9,8 @@ public class bg_door1 : MonoBehaviour{
 
 	void Start(){
 		animator = GetComponent<Animator>();	//Animator取得
-//		col2D = GetComponent<BoxCollider2D>();	//BoxCollider2D取得
 	}
 
-	void Update(){
-	}
 	//他のオブジェクトとの当たり判定(trigger))
 	void OnTriggerEnter2D(Collider2D other) {
 		if(other.gameObject.tag == "Player"){
@@ -42,5 +39,4 @@ public class bg_door1 : MonoBehaviour{
 			}
 		}
 	}
-
 }
