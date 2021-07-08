@@ -10,6 +10,13 @@ public class player_shot : MonoBehaviour{
 	public float timeOut;						//連射間隔の時間
 	public bool isShot;							//攻撃flag
 
+	public GameObject objRollPoint;				//player_shot_roll.csをアッタチしているオブジェクト用
+	private player_shot_roll scrShotRoll;		//player_shot_roll.csスクリプト入れる用
+
+	void Start(){
+		scrShotRoll = objRollPoint.GetComponent<player_shot_roll>();
+	}
+
 	void Update(){
 		if(isShot == true){
 			Shot();
@@ -23,11 +30,15 @@ public class player_shot : MonoBehaviour{
 			//弾の生成位置を指定
 			Vector3 vecBulletPos = bulletStartPosition.position;
 			//弾を生成
-			Instantiate(
+			GameObject shot = Instantiate(
 						bulletObject,
 						vecBulletPos,
 						transform.rotation
 						);
+			//弾に	playerの攻撃の向きを伝える
+			bullet_move_Player num = shot.GetComponent<bullet_move_Player>();
+			num.bulletDirection = scrShotRoll.rollRotation;
+
 			//マズルエフェクトを生成
 			Instantiate(
 						effectObject,

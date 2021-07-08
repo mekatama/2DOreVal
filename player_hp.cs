@@ -9,12 +9,12 @@ public class player_hp : MonoBehaviour{
 	public bool isMuteki;	//無敵flag
 
 	void Start(){
-		isMuteki = false;	//初期化
+//		isMuteki = false;	//初期化
 	}
 
 	//他のオブジェクトとの当たり判定(collision))
 	void OnCollisionEnter2D(Collision2D other) {
-		if(other.gameObject.tag == "Enemy"){
+		if(other.gameObject.tag == "Enemy" || other.gameObject.tag == "Bullet"){
 			//ダメージ処理
 			if(playerHp > 0 && isMuteki == false){
 				playerHp = playerHp - 1;	//[仮]攻撃力をHPから引く

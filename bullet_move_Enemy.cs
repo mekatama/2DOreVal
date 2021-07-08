@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class bullet_move_Player : MonoBehaviour{
+public class bullet_move_Enemy : MonoBehaviour{
 	public float speed = 0.0f;	//弾の移動速度
 	private Rigidbody2D rb2D;
 	private int shot_x;

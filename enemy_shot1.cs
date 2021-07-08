@@ -13,8 +13,8 @@ public class enemy_shot1 : MonoBehaviour{
 	private int numShotCount;					//1setの攻撃数のカウント用
 	public float stopTime;						//一時停止時間
 
-	public GameObject objModel;				//enemy1_direction.csをアッタチしているオブジェクト用
-	private enemy1_direction scrDirection;	//enemy1_direction.csスクリプト入れる用
+	public GameObject objRollPoint;			//enemy_shot_roll.csをアッタチしているオブジェクト用
+	private enemy_shot_roll scrShotRoll;	//enemy_shot_roll.csスクリプト入れる用
 	public GameObject objRader;				//enemy_rader1.csをアッタチしているオブジェクト用
 	private enemy_radar1 scrRader1;			//enemy_rader1.csスクリプト入れる用
 
@@ -26,7 +26,7 @@ public class enemy_shot1 : MonoBehaviour{
 	public BulletType bulletType;
 
 	void Start(){
-		scrDirection = objModel.GetComponent<enemy1_direction>();
+		scrShotRoll = objRollPoint.GetComponent<enemy_shot_roll>();
 		scrRader1 = objRader.GetComponent<enemy_radar1>();
 		numShotCount = 0;	//初期化
 	}
@@ -52,7 +52,6 @@ public class enemy_shot1 : MonoBehaviour{
 			numShotCount = 0;
 			timeElapsed = 0.0f;			//初期化
 		}
-
 	}
 
 	void Shot(){
@@ -67,11 +66,15 @@ public class enemy_shot1 : MonoBehaviour{
 						vecBulletPos,
 						transform.rotation
 						);
-			//榴弾howitzerの時だけ
-			if((int)bulletType == 1){
+			//弾に向きを伝える
+			if((int)bulletType == 0){
+				//弾に	enemyの向きを伝える
+				bullet_move_Enemy flag = shot.GetComponent<bullet_move_Enemy>();
+				flag.bulletDirection = scrShotRoll.rollRotation;
+			}else if((int)bulletType == 1){
 				//弾に	enemyの向きを伝える
 				bullet_move_Enemy1 flag = shot.GetComponent<bullet_move_Enemy1>();
-				flag.isRight = scrDirection.isForward;
+				flag.bulletDirection = scrShotRoll.rollRotation;
 			}
 
 			//マズルエフェクトを生成

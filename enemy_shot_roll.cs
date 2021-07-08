@@ -3,58 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class enemy_shot_roll : MonoBehaviour{
-	private enemy1_direction childScript;	//enemy1_direction.csスクリプト入れる用
-	public GameObject parent;				//enemy1_direction.csをアッタチしているオブジェクト用
+	public int rollRotation;				//弾の移動方向判定用の値
+	public GameObject objModel;				//enemy1_direction.csをアッタチしているオブジェクト用
+	private enemy1_direction scrDirection;	//enemy1_direction.csスクリプト入れる用
 
 	void Start(){
-		childScript = parent.GetComponent<enemy1_direction>();
+		scrDirection = objModel.GetComponent<enemy1_direction>();
 	}
 
 	void Update(){
-/*
-		if(childScript.isForward == true){
-			//画面右上方向
-			transform.rotation = Quaternion.Euler(0, 0, 45f); 
-		}else{
-			//画面左上方向
-			transform.rotation = Quaternion.Euler(0, 0, 135f); 
-		}
-*/
-		if(childScript.isForward == true){
+		if(scrDirection.isForward == 6){
+			//判定エリアを回転
+			transform.rotation = Quaternion.Euler(0, 180f, 0); 
 			//画面→方向
-			transform.rotation = Quaternion.Euler(0, 0, 0); 
+			rollRotation = 6;	//弾の移動方向判定用の値
 		}else{
-			//画面←方向
-			transform.rotation = Quaternion.Euler(0, 0, 180f); 
-		}
-
-
-/*
-		//キー入力判定
-		if (Input.GetKey(KeyCode.UpArrow)) {
-			transform.rotation = Quaternion.Euler(0, 0, 90f); 
-		}
-		if (Input.GetKey(KeyCode.DownArrow)) {
-			transform.rotation = Quaternion.Euler(0, 0, -90f); 
-		}
-		if (Input.GetKey(KeyCode.RightArrow)) {
+			//判定エリアを回転
 			transform.rotation = Quaternion.Euler(0, 0, 0); 
+			//画面←方向
+			rollRotation = 4;	//弾の移動方向判定用の値
 		}
-		if (Input.GetKey(KeyCode.LeftArrow)) {
-			transform.rotation = Quaternion.Euler(0, 0, 180f); 
-		}
-		if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow)) {
-			transform.rotation = Quaternion.Euler(0, 0, 45f); 
-		}
-		if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow)) {
-			transform.rotation = Quaternion.Euler(0, 0, 135f); 
-		}
-		if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow)) {
-			transform.rotation = Quaternion.Euler(0, 0, -45f); 
-		}
-		if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow)) {
-			transform.rotation = Quaternion.Euler(0, 0, -135f); 
-		}
-*/
 	}
 }

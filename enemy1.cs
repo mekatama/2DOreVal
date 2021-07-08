@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class enemy1 : MonoBehaviour{
 	public int enemyHp;				//EnemyのHP
-	private bool isDeth;			//死亡flag
+	public bool isDeth;				//死亡flag
 	private bool isDamage;			//damage flag
 	public bool isScreen;			//画面に入っているか flag
 	public SpriteRenderer s;		//
 	public GameObject particle_exp;	//爆発Particle
+	public GameObject objMoveArea;		//enemy_destroy.csをアッタチしているオブジェクト用
+	private enemy_destroy scrDestroy;	//enemy_destroy.csスクリプト入れる用
 
     void Start(){
 		isDeth = false;		//初期化
 		isDamage = false;	//初期化
 		s = gameObject.GetComponent<SpriteRenderer>();
+		scrDestroy = objMoveArea.GetComponent<enemy_destroy>();
 	}
 
     void Update(){
@@ -34,28 +37,30 @@ public class enemy1 : MonoBehaviour{
 	//他のオブジェクトとの当たり判定(collision))
 	void OnCollisionEnter2D(Collision2D other) {
 		if(other.gameObject.tag == "Bullet"){
-			//ダメージ処理
-			if(enemyHp > 0){
-				enemyHp = enemyHp - 1;	//[仮]攻撃力をHPから引く
-				if(enemyHp <= 0){
-					enemyHp = 0;
+			if(isScreen == true){
+				//ダメージ処理
+				if(enemyHp > 0){
+					enemyHp = enemyHp - 1;	//[仮]攻撃力をHPから引く
+					if(enemyHp <= 0){
+						enemyHp = 0;
+					}
+					isDamage = true;
+					StartCoroutine(onDamage());
 				}
-				isDamage = true;
-				StartCoroutine(onDamage());
-			}
-			//死亡判定
-			if(enemyHp == 0){
-				if(isDeth == false){
-					Destroy(gameObject);			//このGameObjectを削除
-					//爆発effect
-					Instantiate (particle_exp, transform.position, transform.rotation);
-					isDeth = true;
+				//死亡判定
+				if(enemyHp == 0){
+					if(isDeth == false){
+						scrDestroy.isDestroy = true;	//このGameObjectを削除
+						//爆発effect
+						Instantiate (particle_exp, transform.position, transform.rotation);
+						isDeth = true;
+					}
 				}
 			}
 		}
 		if(other.gameObject.tag == "Player"){
 			if(isDeth == false){
-				Destroy(gameObject);			//このGameObjectを削除
+				scrDestroy.isDestroy = true;	//このGameObjectを削除
 				//爆発effect
 				Instantiate (particle_exp, transform.position, transform.rotation);
 				isDeth = true;

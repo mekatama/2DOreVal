@@ -25,7 +25,7 @@ public class enemy2_move : MonoBehaviour{
 	void FixedUpdate(){
 		if(isMove == true){
 			//実際に移動
-			if(childScript.isForward == true){
+			if(childScript.isForward == 1){
 				//前進
 				rb.velocity = new Vector2(speed, rb.velocity.y);
 			}else{

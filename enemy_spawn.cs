@@ -45,25 +45,24 @@ public class enemy_spawn : MonoBehaviour{
 				case 0:
 					int temp = Random.Range(0,2);
 					if(temp == 0){
-						s.isForward = false;	//左に移動
+						s.isForward = 0;	//左に移動
 					}else{
-						s.isForward = true;		//右に移動
+						s.isForward = 1;		//右に移動
 					}
 					break;
 				case 1:
-					s.isForward = false;	//左に移動
+					s.isForward = 0;	//左に移動
 					break;
 				case 2:
-					s.isForward = true;		//右に移動
+					s.isForward = 1;		//右に移動
 					break;
 				case 3:
-					s.isForward = false;	//左に移動
+					s.isForward = 0;	//左に移動
 					break;
 				case 4:
-					s.isForward = true;		//右に移動
+					s.isForward = 1;		//右に移動
 					break;
 			}
-
 			timeElapsed = 0.0f;			//初期化
 		}
 	}

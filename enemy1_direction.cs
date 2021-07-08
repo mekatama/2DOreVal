@@ -3,19 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class enemy1_direction : MonoBehaviour{
-	public bool isForward;	//前移動flag
+	public int isForward;	//向きflag(int)
 
 	void Start(){
-//		isForward = true;	//初期化
+//		isForward = 4;		//初期化(左向き)
 	}
 
-	//他のオブジェクトとの当たり判定(collision))
-	void OnCollisionEnter2D(Collision2D other) {
-		if(other.gameObject.tag == "Wall"){
-			if(isForward == true){
-				isForward = false;
+	//他のオブジェクトとの当たり判定(trigger))
+	void OnTriggerExit2D(Collider2D other) {
+		//往復移動
+		if(other.gameObject.tag == "MoveArea"){
+			if(isForward == 6){
+				isForward = 4;
 			}else{
-				isForward = true;
+				isForward = 6;
+			}
+		}
+	}
+	//他のオブジェクトとの当たり判定(trigger))
+	void OnTriggerEnter2D(Collider2D other) {
+		//壁で反転
+		if(other.gameObject.tag == "Wall"){
+			if(isForward == 6){
+				isForward = 4;
+			}else{
+				isForward = 6;
 			}
 		}
 	}
