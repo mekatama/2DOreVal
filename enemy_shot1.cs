@@ -17,17 +17,13 @@ public class enemy_shot1 : MonoBehaviour{
 	private enemy_shot_roll scrShotRoll;	//enemy_shot_roll.csスクリプト入れる用
 	public GameObject objRader;				//enemy_rader1.csをアッタチしているオブジェクト用
 	private enemy_radar1 scrRader1;			//enemy_rader1.csスクリプト入れる用
-
-	//弾の種類select
-	public enum BulletType{
-		straight = 0,
-		howitzer = 1
-	}
-	public BulletType bulletType;
+	public GameObject objTop;				//enemy_parameter.csをアッタチしているオブジェクト用
+	private enemy_parameter scrParameter;	//enemy_parameter.csスクリプト入れる用
 
 	void Start(){
 		scrShotRoll = objRollPoint.GetComponent<enemy_shot_roll>();
 		scrRader1 = objRader.GetComponent<enemy_radar1>();
+		scrParameter = objTop.GetComponent<enemy_parameter>();
 		numShotCount = 0;	//初期化
 	}
 
@@ -60,18 +56,18 @@ public class enemy_shot1 : MonoBehaviour{
 		if(timeElapsed >= timeOut){
 			//弾の生成位置を指定
 			Vector3 vecBulletPos = bulletStartPosition.position;
-			//弾を生成
+			//弾を生成(int)scrParameter.moveStart
 			GameObject shot = Instantiate(
-						bulletObject[(int)bulletType],
+						bulletObject[(int)scrParameter.bulletType],
 						vecBulletPos,
 						transform.rotation
 						);
 			//弾に向きを伝える
-			if((int)bulletType == 0){
+			if((int)scrParameter.bulletType == 0){
 				//弾に	enemyの向きを伝える
 				bullet_move_Enemy flag = shot.GetComponent<bullet_move_Enemy>();
 				flag.bulletDirection = scrShotRoll.rollRotation;
-			}else if((int)bulletType == 1){
+			}else if((int)scrParameter.bulletType == 1){
 				//弾に	enemyの向きを伝える
 				bullet_move_Enemy1 flag = shot.GetComponent<bullet_move_Enemy1>();
 				flag.bulletDirection = scrShotRoll.rollRotation;

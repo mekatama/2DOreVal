@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class enemy1 : MonoBehaviour{
+	[System.NonSerialized]
 	public int enemyHp;				//EnemyのHP
+
 	public bool isDeth;				//死亡flag
 	private bool isDamage;			//damage flag
 	public bool isScreen;			//画面に入っているか flag
