@@ -18,10 +18,11 @@ public class enemy_parameter : MonoBehaviour{
 
 	//動き種類select
 	public enum MoveType{
-		stop = 0,
-		advance = 1,
-		pause = 2,
-		round_trip = 3
+		stop = 0,		//動かない
+		advance = 1,	//前進のみ
+		pause = 2,		//player発見で停止
+		round_trip = 3,	//往復移動
+		pause_tride = 4	//砦 一定時間前進→停止
 		}
 	public MoveType moveType;
 

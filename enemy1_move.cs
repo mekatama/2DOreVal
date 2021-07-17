@@ -81,5 +81,22 @@ public class enemy1_move : MonoBehaviour{
 				scrDirection.isForward = 6;
 			}
 		}
+		//砦 一定時間前進→停止
+		if((int)scrParameter.moveType == 4){
+			//stopタイミング判定
+			if(scrDirection.isStop == false){
+				if(scrDirection.isForward == 4){
+					//←移動
+					rb.velocity = new Vector2(speed * -1, rb.velocity.y);
+					//移動方向をenemy1_directionに渡す
+					scrDirection.isForward = 4;
+				}else{
+					//→移動
+					rb.velocity = new Vector2(speed, rb.velocity.y);
+					//移動方向をenemy1_directionに渡す
+					scrDirection.isForward = 6;
+				}
+			}
+		}
 	}
 }
