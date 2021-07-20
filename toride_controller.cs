@@ -13,7 +13,10 @@ public class toride_controller : MonoBehaviour{
 
 	public GameObject objTorideSpawn1;		//toride_spawn1.csをアッタチしているオブジェクト用
 	private toride_spawn1 scrTorideSpawn1;	//toride_spawn1.csスクリプト入れる用
-	public bool isOnce1;					//falseにするのは
+	public GameObject objTorideSpawn2;		//toride_spawn1.csをアッタチしているオブジェクト用
+	private toride_spawn2 scrTorideSpawn2;	//toride_spawn1.csスクリプト入れる用
+	public bool isOnce1;					//
+	public bool isOnce2;					//
 	private bool spawn1IsDeth;
 
     void Start(){
@@ -21,6 +24,7 @@ public class toride_controller : MonoBehaviour{
 		spawnType = 0;	//初期化
 		enemy = null;	//
 		scrTorideSpawn1 = objTorideSpawn1.GetComponent<toride_spawn1>();
+		scrTorideSpawn2 = objTorideSpawn2.GetComponent<toride_spawn2>();
 	}
 
     void Update(){
@@ -29,17 +33,35 @@ public class toride_controller : MonoBehaviour{
 			if(isOnce1 == false){
 				timeElapsed += Time.deltaTime;	//カウント
 				if(timeElapsed >= timeOut){
-					enemySpawn();
-					Debug.Log("spawn");
+					enemySpawn(1);
 					isOnce1 = true;
 					timeElapsed = 0;
 				}
 			}
 		}	
+		//spawn2からenemy
+		if(scrTorideSpawn2.isSpawn == true){
+			if(isOnce2 == false){
+				timeElapsed += Time.deltaTime;	//カウント
+				if(timeElapsed >= timeOut){
+					enemySpawn(2);
+					isOnce2 = true;
+					timeElapsed = 0;
+				}
+			}
+		}	
 	}
-	void enemySpawn(){
-		enemyType = 0;	//敵の種類設定、仮で0固定
-		spawnType = 0;	//生成位置設定
+	void enemySpawn(int a){
+		switch(a){
+			case 1:
+				spawnType = 0;	//生成位置設定
+				enemyType = 0;	//敵の種類設定
+				break;
+			case 2:
+				spawnType = 1;	//生成位置設定
+				enemyType = 1;	//敵の種類設定
+				break;
+		}
 		//enemyの生成位置を指定
 		Vector3 vecSpawnPos = spawnPosition[spawnType].position;
 		//enemyを生成
@@ -48,8 +70,17 @@ public class toride_controller : MonoBehaviour{
 					vecSpawnPos,
 					transform.rotation
 					);
-		//生成した敵のenemy1.csを取得
-		enemy_toride1 scrEnemyToride1 = enemy.GetComponentInChildren<enemy_toride1>();
-		scrEnemyToride1.isGo1 = true;
+		switch(a){
+			case 1:
+				//生成した敵のenemy_toride1.csを取得
+				enemy_toride1 scrEnemyToride1 = enemy.GetComponentInChildren<enemy_toride1>();
+				scrEnemyToride1.isGo1 = true;
+				break;
+			case 2:
+				//生成した敵のenemy_toride2.csを取得
+				enemy_toride2 scrEnemyToride2 = enemy.GetComponentInChildren<enemy_toride2>();
+				scrEnemyToride2.isGo2 = true;
+				break;
+		}
 	}
 }
