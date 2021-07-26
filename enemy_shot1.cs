@@ -9,6 +9,8 @@ public class enemy_shot1 : MonoBehaviour{
 	public int numShot;							//1setの攻撃数
 	[System.NonSerialized]
 	public float stopTime;						//一時停止時間
+	[System.NonSerialized]
+	public bool isRadar;						//レーダー使用flag
 
 	public GameObject[] bulletObject = null;	//弾のプレハブ 配列
 	public GameObject effectObject = null;		//マズルエフェクトのプレハブ
@@ -35,7 +37,7 @@ public class enemy_shot1 : MonoBehaviour{
 		//Debug用flag
 		if(isShot == true){
 			//player発見したら
-			if(scrRader1.isDiscovery == true){
+			if(scrRader1.isDiscovery == true || isRadar == false){
 				//1set攻撃回数判定
 				if(numShotCount < numShot){
 					Shot();

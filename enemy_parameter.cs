@@ -33,6 +33,9 @@ public class enemy_parameter : MonoBehaviour{
 	}
 	public BulletType bulletType;
 
+	//レーダー使用設定
+	public bool isRaderUse;
+
 	public GameObject objModel;	//enemy1.csをアッタチしているオブジェクト用
 	private enemy1 scrEnemy1;	//enemy1.csスクリプト入れる用
 	public GameObject objEnemy;	//enemy1_move.csをアッタチしているオブジェクト用
@@ -49,6 +52,7 @@ public class enemy_parameter : MonoBehaviour{
 		scrEnemyShot1.timeOut = timeOut;	//enemy_shot1.csに代入
 		scrEnemyShot1.numShot = numShot;	//enemy_shot1.csに代入
 		scrEnemyShot1.stopTime = stopTime;	//enemy_shot1.csに代入
+		scrEnemyShot1.isRadar = isRaderUse;	//enemy_shot1.csに代入
 	}
 
 	void Update(){
