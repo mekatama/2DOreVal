@@ -27,11 +27,22 @@ public class enemy_parameter : MonoBehaviour{
 	public MoveType moveType;
 
 	//弾の種類select
-	public enum BulletType{
-		straight = 0,
-		howitzer = 1
+	public enum BulletType1{
+		none = 0,
+		straight = 1,
+		howitzer = 2
+//		straight = 0,
+//		howitzer = 1
 	}
-	public BulletType bulletType;
+	public BulletType1 bulletType1;
+
+	//弾の種類select2
+	public enum BulletType2{
+		none = 0,
+		straight = 1,
+		howitzer = 2
+	}
+	public BulletType2 bulletType2;
 
 	//レーダー使用設定
 	public bool isRaderUse;

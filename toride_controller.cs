@@ -44,7 +44,7 @@ public class toride_controller : MonoBehaviour{
 			if(isOnce2 == false){
 				timeElapsed += Time.deltaTime;	//カウント
 				if(timeElapsed >= timeOut){
-					enemySpawn(2);
+//					enemySpawn(2);
 					isOnce2 = true;
 					timeElapsed = 0;
 				}

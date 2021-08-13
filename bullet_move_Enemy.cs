@@ -10,6 +10,7 @@ public class bullet_move_Enemy : MonoBehaviour{
 	public int bulletDirection;		//弾の移動方向
 
 	void Start(){
+Debug.Log("bulletDirection:" + bulletDirection);
 		rb2D = GetComponent<Rigidbody2D>();	//Rigidbody2D取得
 		//方向を決める
 		if(bulletDirection == 8){		//上
@@ -36,6 +37,10 @@ public class bullet_move_Enemy : MonoBehaviour{
 		}else if(bulletDirection == 1){	//下左
 			shot_x = -1;
 			shot_y = -1;
+		}else{
+			//0になる時は左向き扱いにする
+			shot_x = -1;
+			shot_y = 0;
 		}
 	}
 
